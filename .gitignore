@@ -1,0 +1,70 @@
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Dependencies
+/node_modules
+
+# Angular cache
+.angular/cache
+.angular/
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Angular specific
+*.ngfactory.ts
+*.ngstyle.ts
+*.ngsummary.json
+
+# Environment files
+/src/environments/*.js
+
+# Logs
+npm-debug.log
+yarn-error.log
+*.log
+
+# Optional: ignore package-lock.json if you're using npm
+# package-lock.json
+
+# Optional: ignore yarn.lock if you're using yarn
+# yarn.lock
+
+# Ignore files related to API keys
+*.env
+
+# Ignore any files in any node_modules directories
+**/node_modules/**
+
+# Ignore any Angular cache directories
+**/.angular/cache/**
+
+### VS Code ###
+.vscode/

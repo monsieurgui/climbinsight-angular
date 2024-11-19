@@ -1,0 +1,10 @@
+{
+    "projectInstructions": [
+        "This is an Angular project with a Django Ninja API backend.",
+        "The project is a web application for climbing competitons and leagues, and a ranking and scoring system.",
+        "The template is a PrimeNG template with a main layout and a sidebar menu.",
+        "The project uses Tailwind CSS for styling and some PrimeNG components.",
+        "Always use PrimeNG components for styling when possible and Tailwind CSS for custom styling.",
+        "The web application style is modern, clean and minimalistic."
+    ]
+}

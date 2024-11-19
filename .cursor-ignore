@@ -1,0 +1,65 @@
+# Angular
+.angular/
+dist/
+tmp/
+app/**/*.js
+app/**/*.js.map
+
+# Node
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+*.log
+.env
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Tests
+/coverage
+/.nyc_output
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# Python/Django (since this is a Django backend)
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+db.sqlite3
