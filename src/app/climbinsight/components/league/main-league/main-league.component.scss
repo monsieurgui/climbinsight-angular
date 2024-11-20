@@ -1,0 +1,124 @@
+:host ::ng-deep {
+    .p-datatable {
+        .p-datatable-header {
+            padding: 1rem;
+            text-align: left;
+            font-size: 1.5rem;
+        }
+
+        .p-paginator {
+            padding: 1rem;
+        }
+
+        .p-datatable-thead > tr > th {
+            text-align: left;
+            padding: 1rem;
+            border: 1px solid var(--surface-border);
+            border-width: 0 0 1px 0;
+            font-weight: 600;
+            color: var(--text-color);
+            background: var(--surface-section);
+        }
+
+        .p-datatable-tbody > tr > td {
+            text-align: left;
+            border: 1px solid var(--surface-border);
+            border-width: 0 0 1px 0;
+            padding: 1rem;
+        }
+
+        .p-datatable-tbody > tr {
+            transition: background-color 0.2s;
+            
+            &:hover {
+                background-color: var(--surface-200);
+            }
+        }
+    }
+
+    .status-badge {
+        border-radius: 2rem;
+        padding: 0.25rem 0.75rem;
+        font-weight: 500;
+        font-size: 0.875rem;
+        
+        &.draft { 
+            background-color: var(--orange-50);
+            color: var(--orange-700);
+        }
+        &.active { 
+            background-color: var(--green-50);
+            color: var(--green-700);
+        }
+        &.completed { 
+            background-color: var(--blue-50);
+            color: var(--blue-700);
+        }
+        &.archived { 
+            background-color: var(--surface-200);
+            color: var(--surface-700);
+        }
+    }
+
+    .category-chip {
+        background: var(--surface-200);
+        padding: 0.25rem 0.75rem;
+        border-radius: 2rem;
+        font-size: 0.875rem;
+        color: var(--surface-900);
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+    }
+
+    .p-button.p-button-icon-only.p-button-rounded {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .p-inputswitch {
+        .p-inputswitch-slider {
+            background: var(--surface-200);
+        }
+        &.p-inputswitch-checked {
+            .p-inputswitch-slider {
+                background: var(--primary-color);
+            }
+        }
+    }
+
+    .create-league-btn {
+        .p-button {
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 1rem 2rem;
+            background: var(--primary-600);
+            border: 2px solid var(--blue-500);
+            border-radius: 1rem; // rounded-xl
+            
+            &:hover {
+                background: var(--primary-700) !important;
+            }
+            
+            .p-button-icon {
+                font-size: 1.2rem;
+            }
+        }
+    }
+
+    .p-dialog-custom {
+        .p-dialog-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--surface-border);
+        }
+        
+        .p-dialog-content {
+            padding: 1.5rem;
+        }
+        
+        .p-dialog-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--surface-border);
+        }
+    }
+}

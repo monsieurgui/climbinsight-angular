@@ -1,0 +1,302 @@
+<div class="grid">
+    <div class="col-12">
+        <!-- Header Card -->
+        <div class="card mb-3">
+            <div class="flex justify-content-between align-items-center">
+                <div class="flex flex-column">
+                    <div class="flex align-items-center gap-2">
+                        <button pButton icon="pi pi-arrow-left" 
+                            class="p-button-text p-button-rounded"
+                            (click)="goBack()">
+                        </button>
+                        <h4 class="text-primary-900 text-3xl font-bold m-0">League Details</h4>
+                    </div>
+                    @if (league) {
+                        <p class="text-700 text-xl line-height-3 mt-2 mb-0">
+                            {{ league.name }}
+                        </p>
+                    }
+                </div>
+                @if (league) {
+                    <p-tag [value]="league.status" 
+                           [severity]="getStatusSeverity(league.status)"
+                           [rounded]="true">
+                    </p-tag>
+                }
+            </div>
+        </div>
+
+        @if (error) {
+            <div class="p-message p-message-error mb-3">
+                <i class="pi pi-exclamation-circle"></i>
+                <span class="ml-2">{{ error }}</span>
+            </div>
+        }
+
+        @if (loading) {
+            <div class="card">
+                <div class="flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="pi pi-spin pi-spinner text-primary" style="font-size: 2rem"></i>
+                </div>
+            </div>
+        }
+
+        @if (league && !loading) {
+            <!-- Main Content -->
+            <div class="card">
+                <p-tabView [(activeIndex)]="activeTabIndex">
+                    <!-- Overview Tab -->
+                    <p-tabPanel header="Overview">
+                        <div class="grid">
+                            <!-- League Info Card -->
+                            <div class="col-12 lg:col-6">
+                                <p-card header="League Information">
+                                    <div class="flex flex-column gap-3">
+                                        <!-- Name field -->
+                                        <div class="flex justify-content-between align-items-center">
+                                            <span class="font-semibold">Name:</span>
+                                            <div class="flex align-items-center gap-2">
+                                                @if (editingField === 'name') {
+                                                    <div class="flex gap-2">
+                                                        <input pInputText [(ngModel)]="tempEditValue" class="w-full">
+                                                        <button pButton icon="pi pi-check" 
+                                                                class="p-button-rounded p-button-success p-button-text"
+                                                                (click)="saveEdit('name')">
+                                                        </button>
+                                                        <button pButton icon="pi pi-times" 
+                                                                class="p-button-rounded p-button-danger p-button-text"
+                                                                (click)="cancelEdit()">
+                                                        </button>
+                                                    </div>
+                                                } @else {
+                                                    <div class="flex gap-2 align-items-center">
+                                                        <span>{{ league.name }}</span>
+                                                        <button pButton icon="pi pi-pencil" 
+                                                                class="p-button-rounded p-button-text"
+                                                                (click)="startEditing('name')">
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <!-- Start Date field -->
+                                        <div class="flex justify-content-between align-items-center">
+                                            <span class="font-semibold">Start Date:</span>
+                                            <div class="flex align-items-center gap-2">
+                                                @if (editingField === 'start_date') {
+                                                    <div class="flex gap-2">
+                                                        <p-calendar [(ngModel)]="tempEditValue" dateFormat="yy-mm-dd"></p-calendar>
+                                                        <button pButton icon="pi pi-check" 
+                                                                class="p-button-rounded p-button-success p-button-text"
+                                                                (click)="saveEdit('start_date')">
+                                                        </button>
+                                                        <button pButton icon="pi pi-times" 
+                                                                class="p-button-rounded p-button-danger p-button-text"
+                                                                (click)="cancelEdit()">
+                                                        </button>
+                                                    </div>
+                                                } @else {
+                                                    <div class="flex gap-2 align-items-center">
+                                                        <span>{{ league.start_date | date }}</span>
+                                                        <button pButton icon="pi pi-pencil" 
+                                                                class="p-button-rounded p-button-text"
+                                                                (click)="startEditing('start_date')">
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <!-- End Date field -->
+                                        <div class="flex justify-content-between align-items-center">
+                                            <span class="font-semibold">End Date:</span>
+                                            <div class="flex align-items-center gap-2">
+                                                @if (editingField === 'end_date') {
+                                                    <div class="flex gap-2">
+                                                        <p-calendar [(ngModel)]="tempEditValue" dateFormat="yy-mm-dd"></p-calendar>
+                                                        <button pButton icon="pi pi-check" 
+                                                                class="p-button-rounded p-button-success p-button-text"
+                                                                (click)="saveEdit('end_date')">
+                                                        </button>
+                                                        <button pButton icon="pi pi-times" 
+                                                                class="p-button-rounded p-button-danger p-button-text"
+                                                                (click)="cancelEdit()">
+                                                        </button>
+                                                    </div>
+                                                } @else {
+                                                    <div class="flex gap-2 align-items-center">
+                                                        <span>{{ league.end_date | date }}</span>
+                                                        <button pButton icon="pi pi-pencil" 
+                                                                class="p-button-rounded p-button-text"
+                                                                (click)="startEditing('end_date')">
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <!-- Status field -->
+                                        <div class="flex justify-content-between align-items-center">
+                                            <span class="font-semibold">Status:</span>
+                                            <div class="flex align-items-center gap-2">
+                                                @if (editingField === 'status') {
+                                                    <div class="flex gap-2">
+                                                        <p-dropdown [(ngModel)]="tempEditValue" 
+                                                                  [options]="statusOptions"
+                                                                  optionLabel="label"
+                                                                  optionValue="value">
+                                                        </p-dropdown>
+                                                        <button pButton icon="pi pi-check" 
+                                                                class="p-button-rounded p-button-success p-button-text"
+                                                                (click)="saveEdit('status')">
+                                                        </button>
+                                                        <button pButton icon="pi pi-times" 
+                                                                class="p-button-rounded p-button-danger p-button-text"
+                                                                (click)="cancelEdit()">
+                                                        </button>
+                                                    </div>
+                                                } @else {
+                                                    <div class="flex gap-2 align-items-center">
+                                                        <p-tag [value]="league.status" 
+                                                              [severity]="getStatusSeverity(league.status)"
+                                                              [rounded]="true">
+                                                        </p-tag>
+                                                        <button pButton icon="pi pi-pencil" 
+                                                                class="p-button-rounded p-button-text"
+                                                                (click)="startEditing('status')">
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-content-between align-items-center">
+                                            <span class="font-semibold">Active:</span>
+                                            <div class="flex align-items-center gap-2">
+                                                <p-inputSwitch 
+                                                    [(ngModel)]="league.is_active"
+                                                    (onChange)="onActiveToggle($event)">
+                                                </p-inputSwitch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p-card>
+                            </div>
+
+                            <!-- Categories Card -->
+                            <div class="col-12 lg:col-6">
+                                <p-card header="Categories">
+                                    <div class="flex justify-content-between align-items-start">
+                                        <div class="flex gap-2 flex-wrap">
+                                            @if (editingField === 'categories') {
+                                                <div class="flex flex-column gap-2 w-full">
+                                                    <p-multiSelect
+                                                        [(ngModel)]="tempEditValue"
+                                                        [options]="categoryOptions"
+                                                        optionLabel="label"
+                                                        optionValue="value"
+                                                        [style]="{'width': '100%'}"
+                                                        placeholder="Select Categories">
+                                                    </p-multiSelect>
+                                                    <div class="flex gap-2 justify-content-end">
+                                                        <button pButton icon="pi pi-check" 
+                                                                class="p-button-rounded p-button-success p-button-text"
+                                                                (click)="saveEdit('categories')">
+                                                        </button>
+                                                        <button pButton icon="pi pi-times" 
+                                                                class="p-button-rounded p-button-danger p-button-text"
+                                                                (click)="cancelEdit()">
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            } @else {
+                                                <div class="flex flex-column gap-2 w-full">
+                                                    <div class="flex gap-2 flex-wrap">
+                                                        @for (category of league.categories; track category) {
+                                                            <span class="category-chip">{{ category }}</span>
+                                                        }
+                                                    </div>
+                                                    <div class="flex justify-content-end">
+                                                        <button pButton icon="pi pi-pencil" 
+                                                                class="p-button-rounded p-button-text"
+                                                                (click)="startEditing('categories')">
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </p-card>
+                            </div>
+
+                            <!-- Description Card -->
+                            <div class="col-12">
+                                <p-card header="Description">
+                                    <div class="flex flex-column gap-2">
+                                        @if (editingField === 'description') {
+                                            <div class="flex flex-column gap-2">
+                                                <app-rich-text-editor
+                                                    [(value)]="tempEditValue"
+                                                    placeholder="Enter description">
+                                                </app-rich-text-editor>
+                                                <div class="flex gap-2 justify-content-end">
+                                                    <button pButton icon="pi pi-check" 
+                                                            class="p-button-rounded p-button-success p-button-text"
+                                                            (click)="saveEdit('description')">
+                                                    </button>
+                                                    <button pButton icon="pi pi-times" 
+                                                            class="p-button-rounded p-button-danger p-button-text"
+                                                            (click)="cancelEdit()">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        } @else {
+                                            <div class="flex flex-column gap-2">
+                                                <app-rich-text-display
+                                                    [content]="league.description">
+                                                </app-rich-text-display>
+                                                <div class="flex justify-content-end">
+                                                    <button pButton icon="pi pi-pencil" 
+                                                            class="p-button-rounded p-button-text"
+                                                            (click)="startEditing('description')">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </p-card>
+                            </div>
+                        </div>
+                    </p-tabPanel>
+
+                    <!-- Athletes Tab -->
+                    <p-tabPanel header="Athletes">
+                        <p>Athletes list will be implemented here</p>
+                    </p-tabPanel>
+
+                    <!-- Competitions Tab -->
+                    <p-tabPanel header="Competitions">
+                        <p>Competitions list will be implemented here</p>
+                    </p-tabPanel>
+
+                    <!-- Rankings Tab -->
+                    <p-tabPanel header="Rankings">
+                        <p>Rankings will be implemented here</p>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        }
+    </div>
+</div>
+
+<p-confirmDialog></p-confirmDialog>
+
+<div class="flex justify-content-end mt-3">
+    <button pButton 
+            label="Delete League" 
+            icon="pi pi-trash" 
+            class="p-button-danger"
+            (click)="deleteLeague()">
+    </button>
+</div>

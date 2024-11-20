@@ -1,0 +1,86 @@
+:host ::ng-deep {
+    .p-editor-container {
+        .p-editor-toolbar {
+            background: var(--surface-ground);
+            border-color: var(--surface-border);
+            padding: 0.5rem;
+            
+            .ql-formats {
+                margin-right: 12px;
+                
+                button {
+                    color: var(--text-color);
+                    width: 28px;
+                    height: 28px;
+                    
+                    &:hover {
+                        color: var(--primary-color);
+                    }
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+
+                .ql-picker {
+                    color: var(--text-color);
+                    
+                    &:hover {
+                        color: var(--primary-color);
+                    }
+
+                    &.ql-expanded .ql-picker-options {
+                        background: var(--surface-overlay);
+                        border-color: var(--surface-border);
+                        color: var(--text-color);
+                    }
+                }
+            }
+        }
+        
+        .p-editor-content {
+            background: var(--surface-card);
+            border-color: var(--surface-border);
+            min-height: 200px;
+            padding: 1rem;
+            
+            &.ql-snow {
+                border-top: 0;
+            }
+
+            .ql-editor {
+                font-family: var(--font-family);
+                
+                h1 {
+                    font-size: 2em;
+                    margin-bottom: 0.5em;
+                }
+                
+                h2 {
+                    font-size: 1.5em;
+                    margin-bottom: 0.5em;
+                }
+
+                p {
+                    margin-bottom: 1em;
+                }
+
+                ul, ol {
+                    padding-left: 1.5em;
+                    margin-bottom: 1em;
+                }
+
+                table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    margin-bottom: 1em;
+
+                    td {
+                        border: 1px solid var(--surface-border);
+                        padding: 0.5em;
+                    }
+                }
+            }
+        }
+    }
+}

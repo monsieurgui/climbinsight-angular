@@ -1,0 +1,235 @@
+:host ::ng-deep {
+    .card {
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+    }
+
+    .content-section {
+        background: var(--surface-ground);
+        padding: 2rem;
+        border-radius: var(--border-radius);
+    }
+
+    .inner-card {
+        background: var(--surface-section);
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--surface-border);
+    }
+
+    .category-chip {
+        background: var(--primary-900);
+        color: var(--primary-100);
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .p-tabview {
+        .p-tabview-nav {
+            background: var(--surface-ground);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 0.5rem;
+            
+            li {
+                .p-tabview-nav-link {
+                    background: var(--surface-section);
+                    border: none;
+                    border-radius: var(--border-radius);
+                    padding: 1rem 1.5rem;
+                    font-weight: 600;
+                    color: var(--text-color);
+                    transition: all 0.2s;
+
+                    &:hover {
+                        background: var(--surface-hover);
+                        color: var(--primary-color);
+                    }
+                }
+
+                &.p-highlight {
+                    .p-tabview-nav-link {
+                        background: var(--primary-900);
+                        color: var(--primary-100);
+                    }
+                }
+            }
+        }
+
+        .p-tabview-panels {
+            background: var(--surface-section);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+        }
+    }
+
+    .p-card {
+        background: var(--surface-ground);
+        
+        .p-card-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--surface-border);
+            font-weight: 600;
+            font-size: 1.25rem;
+            background: var(--surface-card);
+        }
+
+        .p-card-content {
+            padding: 1.25rem;
+            background: var(--surface-section);
+        }
+    }
+
+    .status-value {
+        padding: 0.25rem 0.75rem;
+        border-radius: 2rem;
+        font-weight: 500;
+        
+        &.draft { 
+            background: var(--orange-900);
+            color: var(--orange-100);
+        }
+        &.active { 
+            background: var(--green-900);
+            color: var(--green-100);
+        }
+        &.completed { 
+            background: var(--blue-900);
+            color: var(--blue-100);
+        }
+        &.archived { 
+            background: var(--surface-900);
+            color: var(--surface-100);
+        }
+    }
+
+    .p-inputtext {
+        min-width: 200px;
+    }
+
+    .p-calendar {
+        min-width: 200px;
+    }
+
+    .p-dropdown {
+        min-width: 200px;
+    }
+
+    .p-inputtextarea {
+        width: 100%;
+        min-height: 100px;
+    }
+
+    .p-multiselect {
+        width: 100%;
+        min-width: 200px;
+    }
+
+    .p-confirm-dialog {
+        .p-dialog-content {
+            padding: 1rem;
+        }
+        
+        .p-confirm-dialog-message {
+            font-size: 1.125rem;
+        }
+        
+        .p-dialog-footer {
+            padding: 1rem;
+            border-top: 1px solid var(--surface-border);
+            
+            button {
+                margin-right: 0.5rem;
+            }
+        }
+    }
+
+    .p-editor-container {
+        .p-editor-toolbar {
+            background: var(--surface-ground);
+            border-color: var(--surface-border);
+            padding: 0.5rem;
+            
+            .ql-formats {
+                margin-right: 12px;
+                
+                button {
+                    color: var(--text-color);
+                    width: 28px;
+                    height: 28px;
+                    
+                    &:hover {
+                        color: var(--primary-color);
+                    }
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+
+                .ql-picker {
+                    color: var(--text-color);
+                    
+                    &:hover {
+                        color: var(--primary-color);
+                    }
+
+                    &.ql-expanded .ql-picker-options {
+                        background: var(--surface-overlay);
+                        border-color: var(--surface-border);
+                        color: var(--text-color);
+                    }
+                }
+            }
+        }
+        
+        .p-editor-content {
+            background: var(--surface-card);
+            border-color: var(--surface-border);
+            min-height: 200px;
+            padding: 1rem;
+            
+            &.ql-snow {
+                border-top: 0;
+            }
+
+            .ql-editor {
+                font-family: var(--font-family);
+                padding: 0;
+                
+                h1 {
+                    font-size: 2em;
+                    margin-bottom: 0.5em;
+                }
+                
+                h2 {
+                    font-size: 1.5em;
+                    margin-bottom: 0.5em;
+                }
+
+                p {
+                    margin-bottom: 1em;
+                }
+
+                ul, ol {
+                    padding-left: 1.5em;
+                    margin-bottom: 1em;
+                }
+
+                table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    margin-bottom: 1em;
+
+                    td {
+                        border: 1px solid var(--surface-border);
+                        padding: 0.5em;
+                    }
+                }
+            }
+        }
+    }
+}

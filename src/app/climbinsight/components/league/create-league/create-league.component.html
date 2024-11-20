@@ -1,0 +1,133 @@
+<div class="grid">
+    <div class="col-12">
+        <!-- Header Card -->
+        <div class="card mb-3">
+            <div class="flex flex-column">
+                <h4 class="text-primary-900 text-3xl font-bold mb-2">
+                    {{ isEditMode ? 'Edit League' : 'Create New League' }}
+                </h4>
+                <p class="text-700 text-xl line-height-3 mb-0">
+                    Configure your league settings and preferences.
+                </p>
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="card">
+            @if (error) {
+                <div class="p-message p-message-error mb-4">
+                    <i class="pi pi-exclamation-circle"></i>
+                    <span class="ml-2">{{ error }}</span>
+                </div>
+            }
+
+            <form [formGroup]="leagueForm" (ngSubmit)="onSubmit()" class="p-fluid">
+                <div class="grid formgrid">
+                    <div class="field col-12 md:col-6">
+                        <label for="name" class="block text-900 font-medium mb-2">League Name*</label>
+                        <div class="p-input-filled">
+                            <input pInputText id="name" formControlName="name" 
+                                class="w-full p-3 border-1 border-gray-300 rounded-md"
+                                placeholder="Enter league name" />
+                            @if (leagueForm.get('name')?.invalid && leagueForm.get('name')?.touched) {
+                                <small class="p-error block mt-1">Name is required and must be at least 3 characters</small>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="field col-12">
+                        <label for="description">Description</label>
+                        <app-rich-text-editor
+                            [value]="leagueForm.get('description')?.value"
+                            (valueChange)="leagueForm.get('description')?.setValue($event)"
+                            placeholder="Enter description">
+                        </app-rich-text-editor>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="start_date" class="block text-900 font-medium mb-2">Start Date*</label>
+                        <p-calendar id="start_date" formControlName="start_date"
+                            [showIcon]="true" dateFormat="dd/mm/yy"
+                            styleClass="w-full"></p-calendar>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="end_date" class="block text-900 font-medium mb-2">End Date*</label>
+                        <p-calendar id="end_date" formControlName="end_date"
+                            [showIcon]="true" dateFormat="dd/mm/yy"
+                            styleClass="w-full"></p-calendar>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="status" class="block text-900 font-medium mb-2">Status*</label>
+                        <p-dropdown id="status" formControlName="status"
+                            [options]="statusOptions" placeholder="Select status"
+                            styleClass="w-full"></p-dropdown>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="categories" class="block text-900 font-medium mb-2">Categories*</label>
+                        <p-multiSelect id="categories" formControlName="categories"
+                            [options]="categoryOptions" defaultLabel="Select categories"
+                            display="chip" styleClass="w-full"></p-multiSelect>
+                    </div>
+
+                    <div class="field-checkbox col-12">
+                        <div class="flex align-items-center">
+                            <p-inputSwitch formControlName="is_active"></p-inputSwitch>
+                            <label class="ml-2 text-900 font-medium">Active</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-content-end gap-3 mt-4">
+                    <button type="button" 
+                        (click)="cancelCreate()"
+                        class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" 
+                        [disabled]="!leagueForm.valid || loading"
+                        class="px-4 py-2 text-white bg-primary-500 border border-transparent rounded-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="pi pi-spin pi-spinner mr-2" *ngIf="loading"></i>
+                        {{ isEditMode ? 'Save Changes' : 'Create League' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<p-dialog 
+    [(visible)]="showConfirmDialog" 
+    [modal]="true" 
+    [draggable]="false"
+    [resizable]="false"
+    styleClass="p-dialog-custom"
+    [style]="{width: '450px'}"
+    header="Confirm League Creation">
+    <div class="flex flex-column gap-4">
+        <div class="text-900">
+            Are you sure you want to {{ isEditMode ? 'update' : 'create' }} this league?
+        </div>
+        <div class="text-600">
+            <strong>Name:</strong> {{ formDataToSubmit?.name }}
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-end gap-2">
+            <button type="button"
+                (click)="showConfirmDialog = false"
+                class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                Cancel
+            </button>
+            <button type="button"
+                (click)="confirmSubmit()"
+                [disabled]="loading"
+                class="px-4 py-2 text-white bg-primary-500 border border-transparent rounded-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="pi pi-spin pi-spinner mr-2" *ngIf="loading"></i>
+                Confirm
+            </button>
+        </div>
+    </ng-template>
+</p-dialog>

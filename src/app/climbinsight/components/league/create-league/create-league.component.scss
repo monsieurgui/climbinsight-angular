@@ -1,0 +1,65 @@
+:host ::ng-deep {
+    .p-calendar, .p-dropdown, .p-multiselect {
+        .p-inputtext {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+        }
+    }
+
+    .p-inputswitch {
+        &.p-inputswitch-checked {
+            .p-inputswitch-slider {
+                background: var(--primary-500);
+            }
+        }
+    }
+
+    .field {
+        margin-bottom: 1.5rem;
+    }
+
+    .p-dialog-custom {
+        .p-dialog-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--surface-border);
+        }
+        
+        .p-dialog-content {
+            padding: 1.5rem;
+        }
+        
+        .p-dialog-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--surface-border);
+        }
+    }
+
+    .p-editor-container {
+        .p-editor-toolbar {
+            background: var(--surface-ground);
+            border-color: var(--surface-border);
+            
+            .ql-formats {
+                button {
+                    color: var(--text-color);
+                    
+                    &:hover {
+                        color: var(--primary-color);
+                    }
+                }
+            }
+        }
+        
+        .p-editor-content {
+            background: var(--surface-card);
+            border-color: var(--surface-border);
+            min-height: 200px;
+            
+            &.ql-snow {
+                border-top: 0;
+            }
+        }
+    }
+}

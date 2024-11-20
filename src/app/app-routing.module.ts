@@ -32,10 +32,13 @@ const routes: Routes = [
                 loadChildren: () => import('./climbinsight/components/dashboard/dashboard.module')
                     .then(m => m.DashboardModule)
             },
-            // Add other protected routes here
+            {
+                path: 'leagues',
+                loadChildren: () => import('./climbinsight/components/league/league-routing.module')
+                    .then(m => m.leagueRoutes)
+            }
         ]
     },
-    
     { path: 'notfound', component: NotfoundComponent },
     { path: '**', redirectTo: '/notfound' },
 ];

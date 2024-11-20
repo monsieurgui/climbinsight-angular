@@ -1,0 +1,35 @@
+:host ::ng-deep {
+    .ql-editor {
+        padding: 0;
+        
+        h1 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        ul, ol {
+            padding-left: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1em;
+
+            td {
+                border: 1px solid var(--surface-border);
+                padding: 0.5em;
+            }
+        }
+    }
+}

@@ -25,15 +25,31 @@ export class ApiService {
     }
 
     post<T>(path: string, body: any = {}): Observable<T> {
-        return this.http.post<T>(`${environment.apiUrl}${path}`, body, {
-            headers: this.createHeaders()
-        });
+        const processedBody = body instanceof FormData ? body : JSON.stringify(body);
+        
+        const headers = body instanceof FormData ? 
+            new HttpHeaders({ 'Accept': 'application/json' }) : 
+            this.createHeaders();
+
+        return this.http.post<T>(
+            `${environment.apiUrl}${path}`, 
+            processedBody,
+            { headers }
+        );
     }
 
     put<T>(path: string, body: any = {}): Observable<T> {
-        return this.http.put<T>(`${environment.apiUrl}${path}`, body, {
-            headers: this.createHeaders()
-        });
+        const processedBody = body instanceof FormData ? body : JSON.stringify(body);
+        
+        const headers = body instanceof FormData ? 
+            new HttpHeaders({ 'Accept': 'application/json' }) : 
+            this.createHeaders();
+
+        return this.http.put<T>(
+            `${environment.apiUrl}${path}`, 
+            processedBody,
+            { headers }
+        );
     }
 
     delete<T>(path: string): Observable<T> {
