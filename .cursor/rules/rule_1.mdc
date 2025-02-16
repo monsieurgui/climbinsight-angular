@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+---
+This SPA is made with Angular. It's a pure SPA with a Django backend available at localhost:3000 (dev).
+
+The Django endpoints are available in the full swagger file in /docs.
+
+1. Always refer to docs/spec.md, unless specified, for the planning of the whole app.
+3. Always update docs/memory.md after every task to track your progress and be able to compare with steps.md
+4. Always use pre-built components (primeng) unless specified
+5. If PrimeNG doesn't have the CSS needed, fallback to Tailwind CSS

@@ -1,26 +1,42 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClimbinsightRoutingModule } from './climbinsight-routing.module';
+
+// PrimeNG Components
 import { ButtonModule } from 'primeng/button';
-import { TimelineModule } from 'primeng/timeline';
-import { CardModule } from 'primeng/card';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DashboardModule } from './components/dashboard/dashboard.module';
-import { RouterModule } from '@angular/router';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { InputMaskModule } from 'primeng/inputmask';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TooltipModule } from 'primeng/tooltip';
+
+// Components
+import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileEditComponent } from './components/profile/profile-edit.component';
 
 @NgModule({
     declarations: [
-        // Remove DashboardComponent from here
+        ProfileComponent,
+        ProfileEditComponent
     ],
     imports: [
-        DashboardModule,  // Add this import instead
         CommonModule,
+        ClimbinsightRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        
+        // PrimeNG
         ButtonModule,
-        TimelineModule,
-        CardModule,
-        RouterModule.forChild([
-            { path: '', component: DashboardComponent }
-        ])
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+        InputTextModule,
+        DropdownModule,
+        CalendarModule,
+        InputMaskModule,
+        BreadcrumbModule,
+        ProgressSpinnerModule,
+        TooltipModule
+    ]
 })
 export class ClimbinsightModule { } 

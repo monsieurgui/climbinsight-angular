@@ -1,11 +1,12 @@
-import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnDestroy, Renderer2 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { LayoutService } from "./service/app.layout.service";
 import { AppSidebarComponent } from "./app.sidebar.component";
-import { AppTopBarComponent } from './app.topbar.component';
+import { AppTopbarComponent } from './app.topbar.component';
 import { AuthService } from '../climbinsight/services/auth.service';
 import { MenuItem } from 'primeng/api';
+import { MenuService } from './app.menu.service';
 
 @Component({
     selector: 'app-layout',
@@ -21,11 +22,11 @@ export class AppLayoutComponent implements OnDestroy {
 
     @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
-    @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
+    @ViewChild(AppTopbarComponent) appTopbar!: AppTopbarComponent;
 
     model: MenuItem[] = [];
 
-    constructor(public layoutService: LayoutService, public renderer: Renderer2, public router: Router, private authService: AuthService) {
+    constructor(private menuService: MenuService, public layoutService: LayoutService, public renderer: Renderer2, public router: Router, private authService: AuthService) {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
             if (!this.menuOutsideClickListener) {
                 this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {

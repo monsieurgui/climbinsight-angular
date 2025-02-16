@@ -10,26 +10,10 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { RippleModule } from 'primeng/ripple';
 import { MenuModule } from 'primeng/menu';
-import { AvatarModule } from 'primeng/avatar';
-import { RouterModule } from '@angular/router';
-import { AppMenuComponent } from './app.menu.component';
-import { AppMenuitemComponent } from './app.menuitem.component';
-import { AppTopbarComponent } from './app.topbar.component';
-import { AppFooterComponent } from './app.footer.component';
-import { AppConfigComponent } from './config/app.config.component';
-import { AppSidebarComponent } from "./app.sidebar.component";
-import { AppLayoutComponent } from "./app.layout.component";
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-    declarations: [
-        AppMenuComponent,
-        AppMenuitemComponent,
-        AppTopbarComponent,
-        AppFooterComponent,
-        AppConfigComponent,
-        AppSidebarComponent,
-        AppLayoutComponent
-    ],
     imports: [
         BrowserModule,
         FormsModule,
@@ -42,9 +26,9 @@ import { AppLayoutComponent } from "./app.layout.component";
         InputSwitchModule,
         RippleModule,
         MenuModule,
-        RouterModule,
-        AvatarModule
+        AppRoutingModule
     ],
-    exports: [AppLayoutComponent]
+    declarations: [AppComponent],
+    bootstrap: [AppComponent]
 })
-export class AppLayoutModule { }
+export class AppModule { } 

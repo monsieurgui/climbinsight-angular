@@ -36,6 +36,11 @@ const routes: Routes = [
                 path: 'leagues',
                 loadChildren: () => import('./climbinsight/components/league/league-routing.module')
                     .then(m => m.leagueRoutes)
+            },
+            {
+                path: 'climbinsight',
+                loadChildren: () => import('./climbinsight/climbinsight.module').then(m => m.ClimbinsightModule),
+                canActivate: [AuthGuard]
             }
         ]
     },

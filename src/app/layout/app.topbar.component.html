@@ -15,11 +15,14 @@
     <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
         <button class="p-link layout-topbar-button">
             <i class="pi pi-question-circle"></i>
-            <span>Aide</span>
+            <span>Help</span>
         </button>
-        <button class="p-link layout-topbar-button" (click)="onLogout()">
-            <i class="pi pi-sign-out"></i>
-            <span>Déconnecter</span>
+        
+        <!-- User Profile Button and Menu -->
+        <p-menu #menu [model]="items" [popup]="true"></p-menu>
+        <button class="p-link layout-topbar-button" (click)="menu.toggle($event)">
+            <i class="pi pi-user"></i>
+            <span>Profile</span>
         </button>
     </div>
 </div>

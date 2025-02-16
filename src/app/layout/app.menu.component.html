@@ -1,15 +1,7 @@
 <ul class="layout-menu">
     <ng-container *ngFor="let item of model; let i = index;">
-        <ng-container *ngIf="item.label === 'Profile'" class="">
-            <li class="profile-section" style="border: 2px solid #ccc; border-radius: 16px; padding: 10px 10px 10px; margin: 20px 0 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                <ul>
-                    <li app-menuitem [item]="item" [index]="i" [root]="true"></li>
-                </ul>
-            </li>
-        </ng-container>
-        <ng-container *ngIf="item.label !== 'Profile'">
-            <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
-            <li *ngIf="item.separator" class="menu-separator"></li>
-        </ng-container>
+        <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
+        <li *ngIf="item.separator" class="menu-separator"></li>
     </ng-container>
+</ul>
 

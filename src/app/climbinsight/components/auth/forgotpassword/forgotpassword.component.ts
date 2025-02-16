@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/climbinsight/services/auth.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-forgotpassword',
@@ -22,7 +23,8 @@ export class ForgotpasswordComponent {
         public layoutService: LayoutService,
         private fb: FormBuilder,
         private authService: AuthService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private router: Router
     ) {
         this.forgotPasswordForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]]
@@ -60,15 +62,21 @@ export class ForgotpasswordComponent {
             this.loading = true;
             this.showConfirmDialog = false;
             
-            await this.authService.requestPasswordReset(this.emailToReset).toPromise();
+            console.log('Sending password reset request for email:', this.emailToReset);
             
+            const response = await firstValueFrom(this.authService.requestPasswordReset(this.emailToReset));
+            console.log('Password reset component success:', response);
             this.emailSent = true;
+            this.requestError = null;
+            
             this.messageService.add({
                 severity: 'success',
                 summary: 'Email Sent',
                 detail: 'Password reset instructions have been sent to your email.'
             });
         } catch (error: any) {
+            console.error('Password reset component error:', error);
+            this.emailSent = false;
             this.requestError = error.message || 'Failed to send reset email. Please try again.';
             
             this.messageService.add({

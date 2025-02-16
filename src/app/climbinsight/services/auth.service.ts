@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import { User } from '../interfaces/user.interface';
-import {  AuthResponse, 
+import { User, AuthResponse } from '../interfaces/user.interface';
+import { 
     LoginRequest, 
     RegisterRequest, 
     TokenRefreshResponse } from '../interfaces/auth.interface';
@@ -11,10 +11,12 @@ import { SessionService } from './session.service';
 import { API_ENDPOINTS } from '../constants/api.constants';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 interface LoginResponse {
-    access: string;    // JWT access token
-    refresh: string;   // JWT refresh token
+    access: string;
+    refresh: string;
+    user: User;
 }
 
 @Injectable({
@@ -37,16 +39,15 @@ export class AuthService {
 
     private getUserFromStorage(): User | null {
         const userStr = localStorage.getItem('currentUser');
-        if (!userStr) {
-            return null;
+        if (userStr) {
+            try {
+                return JSON.parse(userStr);
+            } catch (e) {
+                console.error('Error parsing stored user:', e);
+                return null;
+            }
         }
-        try {
-            return JSON.parse(userStr);
-        } catch (e) {
-            // If there's invalid JSON in storage, clear it
-            localStorage.removeItem('currentUser');
-            return null;
-        }
+        return null;
     }
 
     public get currentUserValue(): User | null {
@@ -83,24 +84,59 @@ export class AuthService {
                 tap(response => {
                     console.log('Auth response received:', response);
                     
-                    // Store the tokens
+                    // Store tokens
                     localStorage.setItem('access_token', response.access);
                     if (rememberMe) {
                         localStorage.setItem('refresh_token', response.refresh);
                     }
                     
-                    // Decode the JWT to get user info
-                    const decodedToken = this.decodeJWT(response.access);
+                    // Get user info from token
+                    const decodedToken: any = jwtDecode(response.access);
                     const user: User = {
                         id: decodedToken.user_id,
                         email: decodedToken.email,
-                        username: decodedToken.email,
-                        primary_login_method: decodedToken.primary_login_method
+                        email_verified: decodedToken.email_verified || false,
+                        username: decodedToken.username,
+                        first_name: decodedToken.first_name || null,
+                        last_name: decodedToken.last_name || null,
+                        date_of_birth: decodedToken.date_of_birth || null,
+                        phone: decodedToken.phone || null,
+                        roles: decodedToken.roles || [],
+                        emergency_contact: decodedToken.emergency_contact || null,
+                        medical_info: decodedToken.medical_info || null,
+                        certifications: decodedToken.certifications || null,
+                        bio: decodedToken.bio || '',
+                        profile_picture: decodedToken.profile_picture || '',
+                        preferences: decodedToken.preferences || {},
+                        notification_settings: decodedToken.notification_settings || {},
+                        avatar: decodedToken.avatar || null,
+                        climbing_level: decodedToken.climbing_level || null,
+                        primary_login_method: decodedToken.primary_login_method || 'email',
+                        role: decodedToken.role ? {
+                            name: decodedToken.role,
+                            permissions: decodedToken.permissions || []
+                        } : undefined,
+                        is_active: decodedToken.is_active || true,
+                        is_staff: decodedToken.is_staff || false,
+                        is_superuser: decodedToken.is_superuser || false,
+                        date_joined: decodedToken.date_joined || new Date().toISOString()
                     };
                     
                     // Store user info
                     localStorage.setItem('currentUser', JSON.stringify(user));
+                    
+                    // Create session
+                    this.sessionService.createSession(
+                        user,
+                        response.access,
+                        rememberMe
+                    );
+                    
+                    // Update current user
                     this.currentUserSubject.next(user);
+                    
+                    // Start refresh timer
+                    this.startRefreshTokenTimer();
                     
                     console.log('Auth state updated with user:', user);
                 }),
@@ -109,20 +145,6 @@ export class AuthService {
                     return throwError(() => error);
                 })
             );
-    }
-
-    private decodeJWT(token: string): any {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        } catch (e) {
-            console.error('Error decoding JWT:', e);
-            return {};
-        }
     }
 
     loginWithGoogle(token: string): Observable<AuthResponse> {
@@ -152,42 +174,53 @@ export class AuthService {
     }
 
     logout(): void {
-        // Clear all stored data
-        localStorage.removeItem('currentUser');
+        // Clear all session data
+        this.sessionService.clearSession();
+        
+        // Clear stored data
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('currentUser');
         
         // Clear the BehaviorSubject
         this.currentUserSubject.next(null);
+        
+        // Stop refresh timer
+        this.stopRefreshTokenTimer();
         
         // Navigate to login page
         this.router.navigate(['/auth/login']);
     }
 
-    refreshToken(): Observable<TokenRefreshResponse> {
-        const refresh_token = localStorage.getItem('refresh_token');
-        if (!refresh_token) {
-            return throwError(() => new Error('No refresh token available'));
+    refreshToken(): Observable<any> {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (!refreshToken) {
+            return throwError(() => 'No refresh token available');
         }
 
-        return this.apiService.post<TokenRefreshResponse>(
-            API_ENDPOINTS.AUTH.REFRESH_TOKEN, 
-            { refresh_token }
-        ).pipe(
-            tap(response => {
-                localStorage.setItem('access_token', response.access_token);
-                this.startRefreshTokenTimer();
-            })
-        );
+        return this.apiService.post(API_ENDPOINTS.AUTH.REFRESH_TOKEN, { refresh_token: refreshToken })
+            .pipe(
+                tap(response => {
+                    localStorage.setItem('access_token', response.access);
+                    this.startRefreshTokenTimer();
+                })
+            );
     }
 
     requestPasswordReset(email: string): Observable<any> {
         return this.apiService.post(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, { email }).pipe(
+            map(response => {
+                console.log('Password reset success response:', response);
+                return response;
+            }),
             catchError(error => {
+                console.error('Password reset error in service:', error);
+                // If we get a 404, the account doesn't exist
                 if (error.status === 404) {
-                    return throwError(() => new Error('No account found with this email address.'));
+                    throw new Error('No account found with this email address.');
                 }
-                return throwError(() => new Error(error.error?.detail || 'Failed to process request.'));
+                // For any other error
+                throw new Error(error.error?.detail || 'Failed to process request.');
             })
         );
     }
@@ -207,20 +240,17 @@ export class AuthService {
     }
 
     private startRefreshTokenTimer() {
-        // Parse the JWT token to get the expiration time
         const token = localStorage.getItem('access_token');
-        if (!token) return;
-
-        const jwtToken = JSON.parse(atob(token.split('.')[1]));
-        const expires = new Date(jwtToken.exp * 1000);
-        const timeout = expires.getTime() - Date.now() - (60 * 1000); // Refresh 1 minute before expiry
-        this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+        if (token) {
+            const decodedToken: any = jwtDecode(token);
+            const expires = new Date(decodedToken.exp * 1000);
+            const timeout = expires.getTime() - Date.now() - (60 * 1000); // Refresh 1 minute before expiry
+            this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+        }
     }
 
     private stopRefreshTokenTimer() {
-        if (this.refreshTokenTimeout) {
-            clearTimeout(this.refreshTokenTimeout);
-        }
+        clearTimeout(this.refreshTokenTimeout);
     }
 
     private handleAuthResponse(response: AuthResponse, rememberMe: boolean = false): void {
@@ -248,5 +278,10 @@ export class AuthService {
                 tap(response => this.registrationEnabled = response.enabled),
                 map(response => response.enabled)
             );
+    }
+
+    updateStoredUser(user: User): void {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
     }
 } 

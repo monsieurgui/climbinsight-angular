@@ -1,0 +1,133 @@
+<div class="surface-card p-4 shadow-2 border-round">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="grid">
+        <!-- Basic Information -->
+        <div class="col-12">
+            <div class="text-xl font-bold mb-4">Basic Information</div>
+            <div class="grid">
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="email" class="block text-900 font-medium mb-2">Email</label>
+                    <input id="email" type="text" pInputText formControlName="email" class="w-full" readonly>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="username" class="block text-900 font-medium mb-2">Username</label>
+                    <input id="username" type="text" pInputText formControlName="username" class="w-full" readonly>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="first_name" class="block text-900 font-medium mb-2">First Name*</label>
+                    <input id="first_name" type="text" pInputText formControlName="first_name" 
+                           class="w-full" [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('first_name')}">
+                    <small class="p-error" *ngIf="isFieldInvalid('first_name')">
+                        {{getErrorMessage('first_name')}}
+                    </small>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="last_name" class="block text-900 font-medium mb-2">Last Name*</label>
+                    <input id="last_name" type="text" pInputText formControlName="last_name" 
+                           class="w-full" [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('last_name')}">
+                    <small class="p-error" *ngIf="isFieldInvalid('last_name')">
+                        {{getErrorMessage('last_name')}}
+                    </small>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="date_of_birth" class="block text-900 font-medium mb-2">Date of Birth</label>
+                    <p-calendar id="date_of_birth" formControlName="date_of_birth" [maxDate]="maxDate" [showIcon]="true" 
+                               class="w-full" [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('date_of_birth')}"></p-calendar>
+                    <small class="p-error" *ngIf="isFieldInvalid('date_of_birth')">
+                        {{getErrorMessage('date_of_birth')}}
+                    </small>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="phone" class="block text-900 font-medium mb-2">Phone Number</label>
+                    <input id="phone" type="text" pInputText formControlName="phone" 
+                           class="w-full" [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('phone')}">
+                    <small class="p-error" *ngIf="isFieldInvalid('phone')">
+                        {{getErrorMessage('phone')}}
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Information -->
+        <div class="col-12">
+            <div class="text-xl font-bold mb-4">Profile Information</div>
+            <div class="grid">
+                <div class="col-12 mb-4">
+                    <label for="bio" class="block text-900 font-medium mb-2">Biography</label>
+                    <textarea id="bio" pInputTextarea formControlName="bio" [rows]="3" class="w-full"></textarea>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="climbing_level" class="block text-900 font-medium mb-2">Climbing Level</label>
+                    <p-dropdown id="climbing_level" formControlName="climbing_level" [options]="climbingLevels" 
+                               class="w-full" [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('climbing_level')}"></p-dropdown>
+                    <small class="p-error" *ngIf="isFieldInvalid('climbing_level')">
+                        {{getErrorMessage('climbing_level')}}
+                    </small>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="avatar" class="block text-900 font-medium mb-2">Avatar URL</label>
+                    <input id="avatar" type="text" pInputText formControlName="avatar" class="w-full">
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Contact -->
+        <div class="col-12" formGroupName="emergency_contact">
+            <div class="text-xl font-bold mb-4">Emergency Contact</div>
+            <div class="grid">
+                <div class="col-12 md:col-4 mb-4">
+                    <label for="emergency_name" class="block text-900 font-medium mb-2">Contact Name</label>
+                    <input id="emergency_name" type="text" pInputText formControlName="name" 
+                           class="w-full" [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('emergency_contact.name')}">
+                    <small class="p-error" *ngIf="isFieldInvalid('emergency_contact.name')">
+                        {{getErrorMessage('emergency_contact.name')}}
+                    </small>
+                </div>
+                <div class="col-12 md:col-4 mb-4">
+                    <label for="emergency_phone" class="block text-900 font-medium mb-2">Contact Phone</label>
+                    <input id="emergency_phone" type="text" pInputText formControlName="phone" 
+                           class="w-full" [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('emergency_contact.phone')}">
+                    <small class="p-error" *ngIf="isFieldInvalid('emergency_contact.phone')">
+                        {{getErrorMessage('emergency_contact.phone')}}
+                    </small>
+                </div>
+                <div class="col-12 md:col-4 mb-4">
+                    <label for="emergency_relationship" class="block text-900 font-medium mb-2">Relationship</label>
+                    <input id="emergency_relationship" type="text" pInputText formControlName="relationship" class="w-full">
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical Information -->
+        <div class="col-12" formGroupName="medical_info">
+            <div class="text-xl font-bold mb-4">Medical Information</div>
+            <div class="grid">
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="conditions" class="block text-900 font-medium mb-2">Medical Conditions</label>
+                    <textarea id="conditions" pInputTextarea formControlName="conditions" [rows]="2" 
+                              class="w-full" [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('medical_info.conditions')}"></textarea>
+                    <small class="p-error" *ngIf="isFieldInvalid('medical_info.conditions')">
+                        {{getErrorMessage('medical_info.conditions')}}
+                    </small>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="allergies" class="block text-900 font-medium mb-2">Allergies</label>
+                    <textarea id="allergies" pInputTextarea formControlName="allergies" [rows]="2" class="w-full"></textarea>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="medications" class="block text-900 font-medium mb-2">Current Medications</label>
+                    <textarea id="medications" pInputTextarea formControlName="medications" [rows]="2" class="w-full"></textarea>
+                </div>
+                <div class="col-12 md:col-6 mb-4">
+                    <label for="blood_type" class="block text-900 font-medium mb-2">Blood Type</label>
+                    <input id="blood_type" type="text" pInputText formControlName="blood_type" class="w-full">
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-12 flex justify-content-end gap-2">
+            <p-button type="button" label="Cancel" styleClass="p-button-secondary" (click)="onCancel()"></p-button>
+            <p-button type="submit" [loading]="loading" label="Save Changes"></p-button>
+        </div>
+    </form>
+</div> 
